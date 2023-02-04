@@ -1,0 +1,19 @@
+# tony server
+alias tony="ssh root@$TONY"
+# listen ports
+alias listen="lsof -i -P -n | grep LISTEN"
+# tmux alias
+alias tm="tmux -u"
+alias tms="tmux -u new-session -s"
+alias tma="tmux -u attach -t"
+alias tml="tmux ls"
+# git alias
+alias ga="git add"
+alias gaa="git add --all"
+alias gb="git branch"
+alias gc="git commit --signoff --message"
+alias gcb="git checkout -b"
+alias gl="git log --graph --pretty='\''%Cred%h%Creset -%C(auto)%d%Creset %s %Cgreen(%ar) %C(bold blue)<%an>%Creset'\'' --stat"
+alias gpl="git pull origin \"$(git_current_branch)\""
+alias gps="git push --set-upstream origin $(git_current_branch)"
+alias gs="git status --short --branch"
