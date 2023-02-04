@@ -143,7 +143,7 @@ export PROMPT_DIRTRIM=4
 
 # start ssh-agent
 if [ ! -S ~/.ssh/ssh_auth_sock ]; then
- eval `ssh-agent`
+ eval `ssh-agent` 1> /dev/null
  sudo ln -sf "$SSH_AUTH_SOCK" ~/.ssh/ssh_auth_sock
 fi
 export SSH_AUTH_SOCK=~/.ssh/ssh_auth_sock
