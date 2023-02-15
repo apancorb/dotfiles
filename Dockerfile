@@ -19,6 +19,7 @@ USER codespace
 WORKDIR /home/codespace
 COPY --chown=codespace:codespace bash/bash_aliases .bash_aliases
 COPY --chown=codespace:codespace bash/bashrc .bashrc
+COPY --chown=codespace:codespace git/gitconfig .gitconfig
 COPY --chown=codespace:codespace nvim .config/nvim
 COPY --chown=codespace:codespace ssh/config .ssh/config
 COPY --chown=codespace:codespace tmux/*.sh  .tmux/
