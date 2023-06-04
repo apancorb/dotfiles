@@ -1,4 +1,4 @@
-FROM mcr.microsoft.com/devcontainers/universal:latest
+FROM --platform=linux/x86_64 mcr.microsoft.com/devcontainers/universal:latest
 RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y \
@@ -7,10 +7,12 @@ RUN apt-get install -y \
   tmux           \
   ripgrep        
 
-RUN wget -P /tmp https://github.com/neovim/neovim/releases/latest/download/nvim.appimage \
-  && chmod u+x /tmp/nvim.appimage                         \
-  && (cd /opt && /tmp/nvim.appimage --appimage-extract)   \
-  && ln -sf /opt/squashfs-root/AppRun /usr/bin/vim 
+RUN git clone --depth 1 --branch stable https://github.com/neovim/neovim /opt/neovim \
+  && apt-get install -y ninja-build gettext cmake unzip curl \
+  && pip install cmake                                       \
+  && cd /opt/neovim                                          \
+  && make CMAKE_BUILD_TYPE=RelWithDebInfo && make install    \
+  && ln -sf $(which nvim) $(which vim)
 
 USER codespace
 WORKDIR /home/codespace
