@@ -1,4 +1,5 @@
-FROM --platform=linux/x86_64 mcr.microsoft.com/devcontainers/universal:latest
+FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/universal:latest
+MAINTAINER tony.software
 RUN apt-get update && apt-get upgrade -y
 
 RUN apt-get install -y \
