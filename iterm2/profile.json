@@ -280,7 +280,7 @@
     "Green Component" : 0.39370739459991455
   },
   "Use Bold Font" : true,
-  "Silence Bell" : false,
+  "Silence Bell" : true,
   "Ansi 12 Color" : {
     "Red Component" : 0.4029005765914917,
     "Color Space" : "sRGB",
@@ -314,7 +314,7 @@
   },
   "Name" : "Dev",
   "Blinking Cursor" : true,
-  "Guid" : "0ACB4954-CEE0-4C77-89F0-89CB890C68D4",
+  "Guid" : "0F56B745-2B73-4292-B954-E8B8F1E82817",
   "Idle Code" : 0,
   "Ansi 10 Color" : {
     "Red Component" : 0,
@@ -350,7 +350,7 @@
   },
   "Blur" : false,
   "Vertical Spacing" : 1,
-  "Normal Font" : "JetBrainsMonoNerdFontCompleteM-Regular 14",
+  "Normal Font" : "JetBrainsMonoNerdFontCompleteM-Medium 14",
   "Ansi 7 Color" : {
     "Red Component" : 0.91824531555175781,
     "Color Space" : "sRGB",
@@ -409,12 +409,12 @@
   "Columns" : 80,
   "Visual Bell" : true,
   "Custom Directory" : "No",
-  "ASCII Ligatures" : true,
   "Ansi 5 Color" : {
     "Red Component" : 0.87703913450241089,
     "Color Space" : "sRGB",
     "Blue Component" : 0.87042087316513062,
     "Alpha Component" : 1,
     "Green Component" : 0.54056793451309204
-  }
+  },
+  "ASCII Ligatures" : true
 }
