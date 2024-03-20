@@ -1,14 +1,9 @@
-require("packer")
-require("core.keymaps")
-require("core.options")
-require("core.colorscheme")
-require("plugins.autopairs")
-require("plugins.bufferline")
-require("plugins.colorizer")
-require("plugins.git")
-require("plugins.gitsigns")
-require("plugins.lsp")
-require("plugins.lualine")
-require("plugins.nvim-tree")
-require("plugins.telescope")
-require("plugins.treesitter")
+-- Set <space> as the leader key.
+vim.g.mapleader = ' '
+-- Set to true if you have a Nerd Font installed.
+vim.g.have_nerd_font = true
+
+-- Set configuration.
+require 'plugins'
+require 'options'
+require 'keymaps'

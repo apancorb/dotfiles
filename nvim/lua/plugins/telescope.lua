@@ -1,60 +1,114 @@
-local telescope_status, telescope = pcall(require, "telescope")
-if not telescope_status then
-  return
-end
+return {
+	{
+		'nvim-telescope/telescope.nvim',
+		branch = '0.1.x',
+		dependencies = {
+			'nvim-lua/plenary.nvim',
+			'nvim-telescope/telescope-file-browser.nvim',
+			{
+				'nvim-telescope/telescope-fzf-native.nvim',
+				build = 'make',
+				cond = function()
+					return vim.fn.executable 'make' == 1
+				end,
+			},
+			{
+				'nvim-tree/nvim-web-devicons',
+				enabled = vim.g.have_nerd_font
+			},
+		},
+		keys = {
+			{
+				'<leader><leader>',
+				function()
+					local builtin = require("telescope.builtin")
+					builtin.buffers()
+				end,
+			},
+			{
+				'<leader>f',
+				function()
+					local builtin = require("telescope.builtin")
+					builtin.find_files({
+						no_ignore = false,
+						hidden = true,
+					})
+				end,
+			},
+			{
+				'<leader>fg',
+				function()
+					local builtin = require("telescope.builtin")
+					builtin.live_grep({
+						additional_args = { "--hidden" },
+					})
+				end,
+				desc =
+				"Search for a string in your current working directory and get results live as you type, respects .gitignore",
+			},
+			{
+				'<leader>fG',
+				function()
+					local builtin = require("telescope.builtin")
+					builtin.grep_string()
+				end,
+				desc =
+				"Search for a string in your current working directory and get results live as you type, respects .gitignore",
+			},
+			{
+				"<leader>ft",
+				function()
+					local builtin = require("telescope.builtin")
+					builtin.treesitter()
+				end
+			},
+			{
+				'<leader>fe',
+				function()
+					local telescope = require('telescope')
+					telescope.extensions.file_browser.file_browser({
+						path = "%:p:h",
+						initial_mode = 'normal',
+						respect_gitignore = false,
+						hidden = true,
+						grouped = true,
+						previewer = true,
+					})
+				end
+			},
+			{
+				'<leader>fc',
+				function()
+					local builtin = require('telescope.builtin')
+					builtin.find_files({
+						cwd = vim.fn.stdpath 'config'
+					})
+				end
+			},
+		},
+		config = function(_, opts)
+			local telescope = require('telescope')
+			local actions = require('telescope.actions')
 
-local actions_status, actions = pcall(require, "telescope.actions")
-if not actions_status then
-  return
-end
+			opts.defaults = {
+				initial_mode = 'normal',
+				layout_config = { prompt_position = 'top' },
+				sorting_strategy = 'ascending',
+				mappings = {
+					n = {
+						['<leader><leader>'] = actions.select_default
+					},
+				},
+			}
+			opts.extensions = {
+				file_browser = {
+					hijack_netrw = true,
+				},
+			}
 
-telescope.setup({
-  defaults = {
-    mappings = {
-      i = {
-        ["<C-k>"] = actions.move_selection_previous,
-        ["<C-j>"] = actions.move_selection_next,
-        ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-      },
-    },
-  },
-  extensions = {
-    file_browser = {
-      theme = "dropdown",
-      hijack_netrw = true,
-      mappings = {
-        n = {
-          ["<C-k>"] = actions.move_selection_previous,
-          ["<C-j>"] = actions.move_selection_next,
-          ["<C-q>"] = actions.send_selected_to_qflist + actions.open_qflist,
-          ["a"] = telescope.extensions.file_browser.actions.create,
-          ["o"] = telescope.extensions.file_browser.actions.goto_parent_dir,
-        },
-      },
-    },
-  }
-})
-
-telescope.load_extension("fzf")
-telescope.load_extension("file_browser")
-
-local function telescope_buffer_dir()
-  return vim.fn.expand("%:p:h")
-end
-
-vim.keymap.set("n", "<leader>f", ":Telescope find_files hidden=true<CR>")
-vim.keymap.set("n", "<leader>fb", ":Telescope buffers<CR>")
-vim.keymap.set("n", "<leader>fg", ":Telescope live_grep<CR>")
-vim.keymap.set("n", "<leader>fG", ":Telescope grep_string<CR>")
-vim.keymap.set("n", "<leader>fe", function()
-  telescope.extensions.file_browser.file_browser({
-    path = "%:p:h",
-    cwd = telescope_buffer_dir(),
-    respect_gitignore = false,
-    hidden = true,
-    grouped = true,
-    previewer = false,
-    initial_mode = "normal",
-    layout_config = { height = 40 }
-  })
-end)
+			telescope.setup(opts)
+			require('telescope').load_extension('fzf')
+			require('telescope').load_extension('file_browser')
+		end,
+	},
+}
