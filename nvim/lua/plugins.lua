@@ -14,9 +14,9 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Configure plugins.
 require('lazy').setup({
-  -- Minimal plugins
+  -- Minimal plugins.
   require 'plugins/mini',
-  -- Preffered colorscheme
+  -- Preffered colorscheme.
   require 'plugins/colorscheme',
   -- Undo tree.
   require 'plugins/undotree',
