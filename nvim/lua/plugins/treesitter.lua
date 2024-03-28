@@ -1,7 +1,7 @@
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    build = ':TSUpdate',
+    build = '<cmd>TSUpdate',
     opts = {
       sync_install = false,
       ensure_installed = { 'java', 'go', 'lua', 'bash', 'markdown' },
