@@ -1,1 +1,4 @@
+# Automatically add keys to the SSH agent
 AddKeysToAgent yes
+# Enable SSH agent forwarding
+ForwardAgent yes
