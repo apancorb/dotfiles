@@ -24,7 +24,7 @@ RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygi
 COPY ssh/sshd.conf /etc/ssh/sshd_config.d/sshd.conf
 RUN echo "codespace:codespace" | chpasswd
 
-# Open Ports:
+# Ports:
 #  SSH  - 8000:2222
 #  HTTP - 8001:8001
 EXPOSE 2222 8001
