@@ -15,7 +15,7 @@ RUN wget -P /opt https://github.com/neovim/neovim/releases/latest/download/nvim-
   && ln -sf /opt/nvim-linux64/bin/nvim $(which vim)
 
 # Install lazygit
-RUN LAZYGIT_VERSION=$(curl -s "https://api.github.com/repos/jesseduffield/lazygit/releases/latest" | grep -Po '"tag_name": "v\K[^"]*') \
+RUN LAZYGIT_VERSION=$(curl -s https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep -Po '"tag_name": "v\K[^"]*') \
   && wget -P /opt/lazygit https://github.com/jesseduffield/lazygit/releases/latest/download/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz \
   && tar -C /opt/lazygit -xzf /opt/lazygit/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz \
   && install /opt/lazygit/lazygit /usr/local/bin
