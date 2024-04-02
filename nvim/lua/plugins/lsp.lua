@@ -3,7 +3,7 @@ return {
     'hrsh7th/nvim-cmp',
     event = 'InsertEnter',
     dependencies = {
-      -- Snippet Engine & its associated nvim-cmp source
+      -- Snippet Engine & its associated nvim-cmp source.
       {
         'L3MON4D3/LuaSnip',
         build = (function()
@@ -46,9 +46,9 @@ return {
           completeopt = 'menu,menuone,noinsert',
         },
         mapping = cmp.mapping.preset.insert {
-          -- Select the next item
+          -- Select the next item.
           ['<c-j>'] = cmp.mapping.select_next_item(),
-          -- Select the previous item
+          -- Select the previous item.
           ['<c-k>'] = cmp.mapping.select_prev_item(),
           -- Accept the completion.
           -- This will auto-import if your LSP supports it.
@@ -109,14 +109,14 @@ return {
           -- To jump back, press <C-t>.
           map('gd', require('telescope.builtin').lsp_definitions)
           -- WARN: This is not Goto Definition, this is Goto Declaration.
-          -- For example, in C this would take you to the header
+          -- For example, in C this would take you to the header.
           map('gD', vim.lsp.buf.declaration)
           -- Jump to the implementation of the word under the cursor.
           -- Useful when your language has ways of declaring types without an actual implementation.
           map('gi', require('telescope.builtin').lsp_implementations)
           -- Find references for the word under the cursor.
           map('gr', require('telescope.builtin').lsp_references)
-          -- Formats the code of the current .
+          -- Formats the code of the current.
           map('fo', function() vim.lsp.buf.format { async = true } end)
           -- Rename the variable under the cursor.
           -- Most Language Servers support renaming across files, etc.
@@ -172,7 +172,7 @@ return {
       -- To check the current status of installed tools and/or manually install
       -- other tools, you can run :Mason
       --
-      -- You can press `g?` for help in this menu
+      -- You can press `g?` for help in this menu.
       require('mason').setup()
 
       -- Add other tools here that you want Mason to install,
@@ -189,7 +189,7 @@ return {
             local server = servers[server_name] or {}
             -- This handles overriding only values explicitly passed
             -- by the server configuration above. Useful when disabling
-            -- certain features of an LSP (for example, turning off formatting for tsserver)
+            -- certain features of an LSP (for example, turning off formatting for tsserver).
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
