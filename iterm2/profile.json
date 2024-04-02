@@ -87,7 +87,7 @@
     "Alpha Component" : 1,
     "Green Component" : 0.83743780851364136
   },
-  "Unlimited Scrollback" : false,
+  "Unlimited Scrollback" : true,
   "Allow Title Setting" : false,
   "Custom Command" : "No",
   "Title Components" : 384,
@@ -416,5 +416,5 @@
     "Alpha Component" : 1,
     "Green Component" : 0.54056793451309204
   },
-  "ASCII Ligatures" : true
+  "ASCII Ligatures" : false
 }
