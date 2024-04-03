@@ -4,7 +4,7 @@
 
 ![](https://miro.medium.com/v2/resize:fit:1400/0*tIIPbYu_jOyl9C1H.png)
 
-*For more information about what devcontainers are and all that fuzz visit [this]() post from my site.*
+*For more information about what devcontainers are and all that fuzz visit [this](https://www.tony.software/posts/developing_inside_container/) post from my site.*
 
 ## Prereqs
 
