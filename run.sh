@@ -3,9 +3,9 @@
 # Display usage instructions
 usage() {
   echo "Usage: $0 [--help] [up|down]"
-  echo "    --help: Display usage instructions"
-  echo "    up: Bring up devcontainer if not running"
-  echo "    down: Delete the devcontainer if it exists"
+  echo "  --help: Display usage instructions"
+  echo "  up: Bring up devcontainer if not running"
+  echo "  down: Delete the devcontainer if it exists"
 }
 
 # Enable SSH agent with GPG support
@@ -100,7 +100,6 @@ delete_container() {
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
     --help)
-      # Display usage instructions
       usage
       exit 0
       ;;
@@ -115,12 +114,10 @@ while [[ "$#" -gt 0 ]]; do
   esac
 done
 
-# Check if the script is called with additional argument
 if [[ "$#" -gt 0 ]]; then
-  # Check if the argument is "up" or "down"
   if [[ "$1" == "up" ]]; then
-    update_repository
     enable_ssh_agent_with_gpg_support
+    update_repository
     build_container
   elif [[ "$1" == "down" ]]; then
     delete_container
@@ -130,7 +127,7 @@ if [[ "$#" -gt 0 ]]; then
     exit 1
   fi
 else
-  update_repository
   enable_ssh_agent_with_gpg_support
+  update_repository
   start_container
 fi
