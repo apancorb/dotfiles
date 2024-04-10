@@ -2,29 +2,32 @@
 
 # Display usage instructions
 usage() {
-  echo "Usage: $0 [--gpg | --help] [up|down]"
+  echo "Usage: $0 [--help] [up|down]"
   echo "    --help: Display usage instructions"
-  echo "    --gpg: SSH authentication using GPG keys"
   echo "    up: Bring up devcontainer if not running"
   echo "    down: Delete the devcontainer if it exists"
 }
 
 # Enable SSH agent with GPG support
 enable_ssh_agent_with_gpg_support() {
-  if command -v gpg &> /dev/null; then
-    eval "$(gpg-agent --daemon --enable-ssh-support > /dev/null)"
-  else
+  if ! command -v gpg-agent &> /dev/null; then
     echo "Error: gpg is not installed. Please install gpg."
     echo "Check https://gpgtools.org"
     exit 1
   fi
+  eval "$(gpg-agent --daemon --enable-ssh-support > /dev/null)"
 }
 
-# Enable default SSH agent
-enable_default_ssh_agent() {
-  eval "$(ssh-agent)" 1> /dev/null
+# Update changes from remote repository
+update_repository() {
+  if ! command -v git &> /dev/null; then
+    echo "Error: git is not installed. Please install git."
+    exit 1
+  fi
+  git pull origin main
 }
 
+# Connect to running devcontainer
 connect_container() {
   if command -v sshpass &> /dev/null; then
     if ! sshpass -p codespace ssh codespace@localhost -p 8000; then
@@ -48,8 +51,7 @@ start_container() {
       exit 1
     fi
     # wait for the devcontainer to start before connecting
-    sleep 2
-    connect_container
+    sleep 2 && connect_container
   else
     echo "Error: devcontainer does not exist, nothing to start."
     exit 1
@@ -95,15 +97,8 @@ delete_container() {
   fi
 }
 
-gpg_flag=false
 while [[ "$#" -gt 0 ]]; do
   case "$1" in
-    --gpg)
-      # Execute GPG commands
-      enable_ssh_agent_with_gpg_support
-      gpg_flag=true
-      shift
-      ;;
     --help)
       # Display usage instructions
       usage
@@ -124,6 +119,8 @@ done
 if [[ "$#" -gt 0 ]]; then
   # Check if the argument is "up" or "down"
   if [[ "$1" == "up" ]]; then
+    update_repository
+    enable_ssh_agent_with_gpg_support
     build_container
   elif [[ "$1" == "down" ]]; then
     delete_container
@@ -133,9 +130,7 @@ if [[ "$#" -gt 0 ]]; then
     exit 1
   fi
 else
-  # Check if --gpg flag is not provided
-  if ! $gpg_flag; then
-    enable_default_ssh_agent
-  fi
+  update_repository
+  enable_ssh_agent_with_gpg_support
   start_container
 fi
