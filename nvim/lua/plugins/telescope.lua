@@ -21,14 +21,14 @@ return {
 			{
 				'<leader><leader>',
 				function()
-					local builtin = require("telescope.builtin")
+					local builtin = require('telescope.builtin')
 					builtin.buffers()
 				end,
 			},
 			{
 				'<leader>f',
 				function()
-					local builtin = require("telescope.builtin")
+					local builtin = require('telescope.builtin')
 					builtin.find_files({
 						no_ignore = false,
 						hidden = true,
@@ -38,27 +38,27 @@ return {
 			{
 				'<leader>fg',
 				function()
-					local builtin = require("telescope.builtin")
+					local builtin = require('telescope.builtin')
 					builtin.live_grep({
-						additional_args = { "--hidden" },
+						additional_args = { '--hidden' },
 					})
 				end,
 				desc =
-				"Search for a string in your current working directory and get results live as you type, respects .gitignore",
+				'Search for a string in your current working directory and get results live as you type, respects .gitignore',
 			},
 			{
 				'<leader>fG',
 				function()
-					local builtin = require("telescope.builtin")
+					local builtin = require('telescope.builtin')
 					builtin.grep_string()
 				end,
 				desc =
-				"Search for a string in your current working directory and get results live as you type, respects .gitignore",
+				'Search for a string in your current working directory and get results live as you type, respects .gitignore',
 			},
 			{
-				"<leader>ft",
+				'<leader>ft',
 				function()
-					local builtin = require("telescope.builtin")
+					local builtin = require('telescope.builtin')
 					builtin.treesitter()
 				end
 			},
@@ -67,7 +67,7 @@ return {
 				function()
 					local telescope = require('telescope')
 					telescope.extensions.file_browser.file_browser({
-						path = "%:p:h",
+						path = '%:p:h',
 						initial_mode = 'normal',
 						respect_gitignore = false,
 						hidden = true,
