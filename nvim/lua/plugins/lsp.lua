@@ -157,15 +157,26 @@ return {
 
       -- Enable the following language servers.
       local servers = {
-        gopls = {},
-        tsserver = {},
-        solidity = {
-          cmd = { 'nomicfoundation-solidity-language-server', '--stdio' },
-          filetypes = { 'solidity' },
-          root_dir = require('lspconfig.util').find_git_ancestor,
-          single_file_support = true,
+        jdtls = {
+          settings = {
+            java = {
+              configuration = {
+                runtimes = {
+                  {
+                    name = 'JavaSE-1.8',
+                    path = vim.fn.glob('/usr/local/sdkman/candidates/java/8*'),
+                    -- This field is required in order for jdtls to function with Java 8 projects.
+                    default = true,
+                  },
+                  {
+                    name = 'JavaSE-17',
+                    path = vim.fn.glob('/usr/local/sdkman/candidates/java/17*'),
+                  },
+                },
+              },
+            },
+          },
         },
-        bashls = {},
       }
 
       -- Ensure the servers and tools above are installed
@@ -195,31 +206,6 @@ return {
           end,
         },
       }
-
-      -- Install dedicated java plugin.
-      require('java').setup()
-      require('lspconfig').jdtls.setup({})
     end,
-  },
-  {
-    'nvim-java/nvim-java',
-    dependencies = {
-      'nvim-java/lua-async-await',
-      'nvim-java/nvim-java-core',
-      'nvim-java/nvim-java-test',
-      'nvim-java/nvim-java-dap',
-      'MunifTanjim/nui.nvim',
-      'neovim/nvim-lspconfig',
-      'mfussenegger/nvim-dap',
-      {
-        'williamboman/mason.nvim',
-        opts = {
-          registries = {
-            'github:nvim-java/mason-registry',
-            'github:mason-org/mason-registry',
-          },
-        },
-      }
-    }
   },
 }
