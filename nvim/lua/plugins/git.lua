@@ -1,28 +1,10 @@
 return {
   {
-    {
-      'kdheepak/lazygit.nvim',
-      cmd = {
-        'LazyGit',
-        'LazyGitConfig',
-      },
-      keys = {
-        {
-          '<leader>g',
-          '<cmd>LazyGit<cr>',
-        },
-      },
-      dependencies = {
-        'nvim-lua/plenary.nvim',
-      },
-    },
-  },
-  {
     "dinhhuy258/git.nvim",
     event = "BufReadPre",
     opts = {
       keymaps = {
-        blame = "<leader>G",
+        blame = "<leader>gb",
       },
     },
   },
