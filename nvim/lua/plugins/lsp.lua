@@ -102,8 +102,6 @@ return {
           -- Fuzzy find all the symbols in the current buffer.
           -- Symbols are things like variables, functions, types, etc.
           map('S', require('telescope.builtin').lsp_document_symbols)
-          -- List all diagnostics for the current buffer.
-          map('R', require('telescope.builtin').diagnostics)
           -- Jump to the definition of the word under the cursor.
           -- This is where a variable was first declared, or where a function is defined, etc.
           -- To jump back, press <C-t>.
@@ -116,6 +114,10 @@ return {
           map('gi', require('telescope.builtin').lsp_implementations)
           -- Find references for the word under the cursor.
           map('gr', require('telescope.builtin').lsp_references)
+          -- Open floating windown with diagnostics for current line.
+          map('r', vim.diagnostic.open_float)
+          -- Go to the next diagnostic in the current file.
+          map('R', vim.diagnostic.goto_next)
           -- Formats the code of the current.
           map('fo', function() vim.lsp.buf.format { async = true } end)
           -- Rename the variable under the cursor.
