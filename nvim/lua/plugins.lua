@@ -28,6 +28,8 @@ require('lazy').setup({
   require 'plugins/telescope',
   -- Highlight code.
   require 'plugins/treesitter',
+  -- Completion Configuration.
+  require 'plugins/cmp',
   -- LSP Configuration.
   require 'plugins/lsp',
 }, {})
