@@ -32,4 +32,6 @@ require('lazy').setup({
   require 'plugins/cmp',
   -- LSP Configuration.
   require 'plugins/lsp',
+  -- Debugger Configuration.
+  require 'plugins/debug',
 }, {})
