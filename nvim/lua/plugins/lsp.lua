@@ -82,42 +82,19 @@ return {
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers.
-      local servers = {
-        jdtls = {
-          settings = {
-            java = {
-              configuration = {
-                runtimes = {
-                  {
-                    name = 'JavaSE-1.8',
-                    path = vim.fn.glob('/usr/local/sdkman/candidates/java/8*'),
-                    -- This field is required in order for jdtls to work with Java 8 projects.
-                    default = true,
-                  },
-                  {
-                    name = 'JavaSE-17',
-                    path = vim.fn.glob('/usr/local/sdkman/candidates/java/17*'),
-                  },
-                },
-              },
-            },
-          },
-        },
-      }
+      local servers = {}
 
       -- Ensure the servers and tools above are installed
       -- To check the current status of installed tools and/or manually install
-      -- other tools, you can run :Mason
+      -- other tools, run :Mason
       --
       -- You can press `g?` for help in this menu.
       require('mason').setup()
 
-      -- Add other tools here that you want Mason to install,
+      -- Add other tools here that for Mason to install,
       -- so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {
-        -- 'stylua',
-      })
+      vim.list_extend(ensure_installed, {})
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
@@ -134,4 +111,49 @@ return {
       }
     end,
   },
+  {
+    'nvim-java/nvim-java',
+    dependencies = {
+      'nvim-java/lua-async-await',
+      'nvim-java/nvim-java-core',
+      'nvim-java/nvim-java-test',
+      'nvim-java/nvim-java-dap',
+      'MunifTanjim/nui.nvim',
+      'neovim/nvim-lspconfig',
+      'mfussenegger/nvim-dap',
+      {
+        'williamboman/mason.nvim',
+        opts = {
+          registries = {
+            'github:nvim-java/mason-registry',
+            'github:mason-org/mason-registry',
+          },
+        },
+      }
+    },
+    config = function()
+      local jdtls = {
+        settings = {
+          java = {
+            configuration = {
+              runtimes = {
+                {
+                  name = 'JavaSE-1.8',
+                  path = vim.fn.glob('/usr/local/sdkman/candidates/java/8*'),
+                  -- This field is required in order for jdtls to work with Java 8 projects.
+                  default = true,
+                },
+                {
+                  name = 'JavaSE-17',
+                  path = vim.fn.glob('/usr/local/sdkman/candidates/java/17*'),
+                },
+              },
+            },
+          },
+        },
+      }
+      require('java').setup()
+      require('lspconfig').jdtls.setup(jdtls)
+    end
+  }
 }
