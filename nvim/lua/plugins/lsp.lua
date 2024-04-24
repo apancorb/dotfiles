@@ -132,7 +132,8 @@ return {
       }
     },
     config = function()
-      local jdtls = {
+      require('java').setup()
+      require('lspconfig').jdtls.setup({
         settings = {
           java = {
             configuration = {
@@ -151,9 +152,7 @@ return {
             },
           },
         },
-      }
-      require('java').setup()
-      require('lspconfig').jdtls.setup(jdtls)
+      })
     end
   }
 }

@@ -7,7 +7,7 @@ return {
       'L3MON4D3/LuaSnip',
       build = (function()
         -- Build Step is needed for regex support in snippets.
-        if vim.fn.executable 'make' == 0 then
+        if vim.fn.executable('make') == 0 then
           return
         end
         return 'make install_jsregexp'
@@ -88,7 +88,7 @@ return {
       TypeParameter = ' ',
     }
 
-    cmp.setup {
+    cmp.setup({
       snippet = {
         expand = function(args)
           luasnip.lsp_expand(args.body)
@@ -167,6 +167,6 @@ return {
       experimental = {
         ghost_text = true,
       },
-    }
+    })
   end,
 }
