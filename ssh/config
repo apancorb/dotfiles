@@ -2,3 +2,6 @@
 AddKeysToAgent yes
 # Enable SSH agent forwarding
 ForwardAgent yes
+# Disbale known hosts check
+Host *
+    StrictHostKeyChecking no
