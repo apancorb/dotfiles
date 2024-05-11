@@ -31,6 +31,8 @@ EXPOSE 2222 8001
 
 USER codespace
 WORKDIR /home/codespace
+
+RUN echo '[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit;}' >> .bashrc
 COPY --chown=codespace:codespace bash/.bash_aliases .bash_aliases
 COPY --chown=codespace:codespace git/.gitconfig .gitconfig
 COPY --chown=codespace:codespace nvim .config/nvim
