@@ -123,8 +123,8 @@ return {
         comparators = {
           lspkind_comparator({
             kind_priority = {
+              Variable = 12,
               Field = 11,
-              Variable = 11,
               Property = 11,
               Constant = 10,
               Enum = 10,
