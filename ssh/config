@@ -5,3 +5,4 @@ ForwardAgent yes
 # Disbale known hosts check
 Host *
     StrictHostKeyChecking no
+    UserKnownHostsFile /dev/null
