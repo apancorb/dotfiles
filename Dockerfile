@@ -39,4 +39,4 @@ COPY --chown=codespace:codespace nvim .config/nvim
 COPY --chown=codespace:codespace ssh/config .ssh/config
 COPY --chown=codespace:codespace ssh/rc .ssh/rc
 COPY --chown=codespace:codespace tmux/.tmux.conf .tmux.conf
-COPY --chown=codespace:codespace tmux/setup.sh  .tmux/
+COPY --chown=codespace:codespace tmux/setup.sh  .tmux/setup.sh
