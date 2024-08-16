@@ -131,6 +131,11 @@ return {
         },
       }
     },
+    opts = {
+      spring_boot_tools = {
+        enable = false,
+      },
+    },
     config = function()
       require('java').setup()
       require('lspconfig').jdtls.setup({
