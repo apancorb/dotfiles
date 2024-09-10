@@ -131,13 +131,12 @@ return {
         },
       }
     },
-    opts = {
-      spring_boot_tools = {
-        enable = false,
-      },
-    },
     config = function()
-      require('java').setup()
+      require('java').setup({
+        spring_boot_tools = {
+          enable = false,
+        },
+      })
       require('lspconfig').jdtls.setup({
         settings = {
           java = {
