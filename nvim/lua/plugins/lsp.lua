@@ -143,14 +143,12 @@ return {
             configuration = {
               runtimes = {
                 {
-                  name = 'JavaSE-1.8',
-                  path = vim.fn.glob('/usr/local/sdkman/candidates/java/8*'),
-                  -- This field is required in order for jdtls to work with Java 8 projects.
-                  default = true,
-                },
-                {
                   name = 'JavaSE-17',
                   path = vim.fn.glob('/usr/local/sdkman/candidates/java/17*'),
+                },
+                {
+                  name = 'JavaSE-21',
+                  path = vim.fn.glob('/usr/local/sdkman/candidates/java/21*'),
                 },
               },
             },
