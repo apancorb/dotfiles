@@ -82,7 +82,7 @@ return {
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers.
-      local servers = { 'rust-analyzer' }
+      local servers = {}
 
       -- Ensure the servers and tools above are installed
       -- To check the current status of installed tools and/or manually install
@@ -94,7 +94,7 @@ return {
       -- Add other tools here that for Mason to install,
       -- so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, {})
+      vim.list_extend(ensure_installed, { 'rust-analyzer' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
