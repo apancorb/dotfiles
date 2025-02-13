@@ -15,10 +15,10 @@ vim.opt.wrap = false
 -- Keep at least 8 lines visible above and below the cursor when scrolling.
 vim.opt.scrolloff = 8
 -- Width of a tab character in spaces.
-vim.opt.tabstop = 2
-vim.opt.softtabstop = 2
+vim.opt.tabstop = 4 
+vim.opt.softtabstop = 4
 -- Number of spaces to use for each level of indentation.
-vim.opt.shiftwidth = 2
+vim.opt.shiftwidth = 4
 -- Uses spaces for indentation instead of tab characters.
 vim.opt.expandtab = true
 -- Case-insensitive searches only if the search pattern contains lowercase characters.
