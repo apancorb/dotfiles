@@ -82,7 +82,7 @@ return {
       capabilities = vim.tbl_deep_extend('force', capabilities, require('cmp_nvim_lsp').default_capabilities())
 
       -- Enable the following language servers.
-      local servers = {}
+      local servers = { 'rust-analyzer' }
 
       -- Ensure the servers and tools above are installed
       -- To check the current status of installed tools and/or manually install
