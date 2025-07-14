@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 mcr.microsoft.com/vscode/devcontainers/universal:2.10.1
+FROM --platform=linux/amd64 mcr.microsoft.com/vscode/devcontainers/universal:2.12.6
 LABEL maintainer="Antonio Pancorbo <me@tony.software>"
 RUN apt-get update && apt-get upgrade -y
 
@@ -39,4 +39,4 @@ COPY --chown=codespace:codespace nvim .config/nvim
 COPY --chown=codespace:codespace ssh/config .ssh/config
 COPY --chown=codespace:codespace ssh/rc .ssh/rc
 COPY --chown=codespace:codespace tmux/.tmux.conf .tmux.conf
-COPY --chown=codespace:codespace tmux/setup.sh  .tmux/setup.sh
+COPY --chown=codespace:codespace tmux/setup.sh .tmux/setup.sh
