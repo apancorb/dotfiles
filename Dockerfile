@@ -20,6 +20,9 @@ RUN LAZYGIT_VERSION=$(curl -s https://api.github.com/repos/jesseduffield/lazygit
   && tar -C /opt/lazygit -xzf /opt/lazygit/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz \
   && install /opt/lazygit/lazygit /usr/local/bin
 
+# Install claude code
+RUN npm install -g @anthropic-ai/claude-code
+
 # Configure SSH server
 COPY ssh/sshd.conf /etc/ssh/sshd_config.d/sshd.conf
 RUN echo "codespace:codespace" | chpasswd
@@ -34,6 +37,7 @@ WORKDIR /home/codespace
 
 RUN echo '[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit;}' >> .bashrc
 COPY --chown=codespace:codespace bash/.bash_aliases .bash_aliases
+COPY --chown=codespace:codespace claude/CLAUDE.md .claude/CLAUDE.md
 COPY --chown=codespace:codespace git/.gitconfig .gitconfig
 COPY --chown=codespace:codespace nvim .config/nvim
 COPY --chown=codespace:codespace ssh/config .ssh/config
