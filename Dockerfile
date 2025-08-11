@@ -35,14 +35,6 @@ EXPOSE 2222 8001
 USER codespace
 WORKDIR /home/codespace
 
-# Copy .env file if it exists and source it in .bashrc
-COPY --chown=codespace:codespace .env* ./
-RUN if [ -f .env ]; then \
-      echo '# Source environment variables' >> .bashrc && \
-      echo '[ -f ~/.env ] && set -a && source ~/.env && set +a' >> .bashrc; \
-    fi
-
-RUN echo '[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit;}' >> .bashrc
 COPY --chown=codespace:codespace bash/.bash_aliases .bash_aliases
 COPY --chown=codespace:codespace claude/CLAUDE.md .claude/CLAUDE.md
 COPY --chown=codespace:codespace git/.gitconfig .gitconfig
@@ -51,3 +43,12 @@ COPY --chown=codespace:codespace ssh/config .ssh/config
 COPY --chown=codespace:codespace ssh/rc .ssh/rc
 COPY --chown=codespace:codespace tmux/.tmux.conf .tmux.conf
 COPY --chown=codespace:codespace tmux/setup.sh .tmux/setup.sh
+
+# Copy .env file if it exists and source it in .bashrc
+COPY --chown=codespace:codespace .env* ./
+RUN if [ -f .env ]; then \
+      echo '# Source environment variables' >> .bashrc && \
+      echo '[ -f ~/.env ] && set -a && source ~/.env && set +a' >> .bashrc; \
+    fi
+
+RUN echo '[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit;}' >> .bashrc
