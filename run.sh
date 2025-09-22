@@ -74,6 +74,7 @@ build_container() {
   fi
   if ! docker run --privileged -d \
       --platform linux/amd64 \
+      -v /var/run/docker.sock:/var/run/docker.sock \
       -v "$HOME"/data:/home/codespace/data \
       -p 8000:2222 \
       -p 8001:8001 \

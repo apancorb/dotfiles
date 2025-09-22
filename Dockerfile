@@ -1,4 +1,4 @@
-FROM --platform=linux/amd64 mcr.microsoft.com/vscode/devcontainers/universal:2.12.6
+FROM --platform=linux/amd64 mcr.microsoft.com/vscode/devcontainers/universal:4.0.1
 LABEL maintainer="Antonio Pancorbo <me@tony.software>"
 RUN apt-get update && apt-get upgrade -y
 
