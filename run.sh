@@ -29,6 +29,15 @@ update_repository() {
 
 # Connect to running devcontainer
 connect_container() {
+  # Start SSH service in the new container
+  container_id=$(docker ps --format '{{.ID}}' --filter "ancestor=devcontainer")
+  docker exec "$container_id" sudo service ssh start
+
+  # Fix Docker permissions
+  docker exec "$container_id" sudo usermod -aG docker codespace
+  docker exec "$container_id" sudo chown root:docker /var/run/docker.sock
+  docker exec "$container_id" sudo chmod 660 /var/run/docker.sock
+
   if command -v sshpass &> /dev/null; then
     if ! sshpass -p codespace ssh codespace@localhost -p 8000; then
       echo "Error: Failed to login into the devcontainer."
