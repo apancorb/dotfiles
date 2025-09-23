@@ -6,8 +6,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y \
   dnsutils \
   iputils-ping \
-  ripgrep \
-  tmux
+  ripgrep
 
 # Install neovim
 RUN wget -P /opt https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz \
@@ -41,8 +40,6 @@ COPY --chown=codespace:codespace git/.gitconfig .gitconfig
 COPY --chown=codespace:codespace nvim .config/nvim
 COPY --chown=codespace:codespace ssh/config .ssh/config
 COPY --chown=codespace:codespace ssh/rc .ssh/rc
-COPY --chown=codespace:codespace tmux/.tmux.conf .tmux.conf
-COPY --chown=codespace:codespace tmux/setup.sh .tmux/setup.sh
 
 # Copy .env file if it exists and source it in .bashrc
 COPY --chown=codespace:codespace .env* ./
@@ -50,5 +47,3 @@ RUN if [ -f .env ]; then \
       echo '# Source environment variables' >> .bashrc && \
       echo '[ -f ~/.env ] && set -a && source ~/.env && set +a' >> .bashrc; \
     fi
-
-RUN echo '[ -z "$TMUX"  ] && { tmux attach || tmux new-session && exit;}' >> .bashrc
