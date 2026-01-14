@@ -1,5 +1,22 @@
 # Claude Memory
 
+## Commit Message Guidelines
+
+When creating git commits, follow these rules:
+
+- Use conventional commit format: `type: description`
+- Types: `feat`, `fix`, `style`, `refactor`, `test`, `docs`, `chore`
+- Keep the message concise and descriptive
+- **Never include Co-Authored-By lines**
+
+Examples:
+```
+feat: add native bridge confirmation checking
+fix: resolve null pointer in user validation
+style: apply nightly rustfmt to native bridge code
+refactor: extract helper function for API calls
+```
+
 ## PR Review Guidelines
 
 When reviewing pull requests, always incorporate existing comments and discussions to provide comprehensive, context-aware reviews.
