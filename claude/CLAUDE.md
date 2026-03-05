@@ -1,46 +1,52 @@
-# Claude Memory
+## Workflow Orchestration
 
-## Commit Message Guidelines
+### 1. Plan Node Default
+- Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions)
+- If something goes sideways, STOP and re-plan immediately – don't keep pushing
+- Use plan mode for verification steps, not just building
+- Write detailed specs upfront to reduce ambiguity
 
-When creating git commits, follow these rules:
+### 2. Subagent Strategy
+- Use subagents liberally to keep main context window clean
+- Offload research, exploration, and parallel analysis to subagents
+- For complex problems, throw more compute at it via subagents
+- One task per subagent for focused execution
 
-- Use conventional commit format: `type: description`
-- Types: `feat`, `fix`, `style`, `refactor`, `test`, `docs`, `chore`
-- Keep the message concise and descriptive
-- **Never include Co-Authored-By lines**
+### 3. Self-Improvement Loop
+- After ANY correction from the user: update `tasks/lessons.md` with the pattern
+- Write rules for yourself that prevent the same mistake
+- Ruthlessly iterate on these lessons until mistake rate drops
+- Review lessons at session start for relevant project
 
-Examples:
-```
-feat: add native bridge confirmation checking
-fix: resolve null pointer in user validation
-style: apply nightly rustfmt to native bridge code
-refactor: extract helper function for API calls
-```
+### 4. Verification Before Done
+- Never mark a task complete without proving it works
+- Diff behavior between main and your changes when relevant
+- Ask yourself: "Would a staff engineer approve this?"
+- Run tests, check logs, demonstrate correctness
 
-## PR Review Guidelines
+### 5. Demand Elegance (Balanced)
+- For non-trivial changes: pause and ask "is there a more elegant way?"
+- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+- Skip this for simple, obvious fixes – don't over-engineer
+- Challenge your own work before presenting it
 
-When reviewing pull requests, always incorporate existing comments and discussions to provide comprehensive, context-aware reviews.
+### 6. Autonomous Bug Fixing
+- When given a bug report: just fix it. Don't ask for hand-holding
+- Point at logs, errors, failing tests – then resolve them
+- Zero context switching required from the user
+- Go fix failing CI tests without being told how
 
-### Review Process Steps
+## Task Management
 
-1. **First fetch and analyze existing comments**
-   - Use `gh api /repos/{owner}/{repo}/issues/{number}/comments` for PR-level comments
-   - Use `gh api /repos/{owner}/{repo}/pulls/{number}/comments` for code review comments
-   - Parse both comment types to understand ongoing discussions
+1. **Plan First**: Write plan to `tasks/todo.md` with checkable items
+2. **Verify Plan**: Check in before starting implementation
+3. **Track Progress**: Mark items complete as you go
+4. **Explain Changes**: High-level summary at each step
+5. **Document Results**: Add review section to `tasks/todo.md`
+6. **Capture Lessons**: Update `tasks/lessons.md` after corrections
 
-2. **Reference them in my review when relevant**
-   - Acknowledge existing feedback when building upon it
-   - Provide context about whether issues are known vs. overlooked
-   - Reference specific comment threads when adding related observations
+## Core Principles
 
-3. **Focus on areas not yet covered**
-   - Avoid duplicating issues already identified by other reviewers
-   - Identify gaps in existing review coverage
-   - Add fresh perspectives on unaddressed aspects
-
-4. **Highlight when I agree/disagree with existing feedback**
-   - Support valid concerns raised by other reviewers
-   - Respectfully disagree when warranted with clear reasoning
-   - Clarify or expand on points that need more detail
-
-This ensures reviews are comprehensive, collaborative, and contextually informed.
+- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
