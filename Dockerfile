@@ -9,9 +9,9 @@ RUN apt-get install -y \
   ripgrep
 
 # Install neovim
-RUN wget -P /opt https://github.com/neovim/neovim/releases/download/v0.9.5/nvim-linux64.tar.gz \
-  && tar -C /opt -xzf /opt/nvim-linux64.tar.gz \
-  && ln -sf /opt/nvim-linux64/bin/nvim $(which vim)
+RUN wget -P /opt https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz \
+  && tar -C /opt -xzf /opt/nvim-linux-x86_64.tar.gz \
+  && ln -sf /opt/nvim-linux-x86_64/bin/nvim /usr/bin/vim
 
 # Install lazygit
 RUN LAZYGIT_VERSION=$(curl -s https://api.github.com/repos/jesseduffield/lazygit/releases/latest | grep -Po '"tag_name": "v\K[^"]*') \

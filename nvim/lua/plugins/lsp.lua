@@ -94,7 +94,7 @@ return {
       -- Add other tools here that for Mason to install,
       -- so that they are available from within Neovim.
       local ensure_installed = vim.tbl_keys(servers or {})
-      vim.list_extend(ensure_installed, { 'rust-analyzer' })
+      vim.list_extend(ensure_installed, { 'rust-analyzer', 'jdtls' })
       require('mason-tool-installer').setup { ensure_installed = ensure_installed }
 
       require('mason-lspconfig').setup {
@@ -107,6 +107,8 @@ return {
             server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
             require('lspconfig')[server_name].setup(server)
           end,
+          -- nvim-java handles jdtls setup; prevent the default handler from overriding it
+          jdtls = function() end,
         },
       }
     end,
@@ -114,10 +116,6 @@ return {
   {
     'nvim-java/nvim-java',
     dependencies = {
-      'nvim-java/lua-async-await',
-      'nvim-java/nvim-java-core',
-      'nvim-java/nvim-java-test',
-      'nvim-java/nvim-java-dap',
       'MunifTanjim/nui.nvim',
       'neovim/nvim-lspconfig',
       'mfussenegger/nvim-dap',
@@ -133,13 +131,28 @@ return {
     },
     config = function()
       require('java').setup({
+        java_debug_adapter = {
+          enable = false,
+        },
         spring_boot_tools = {
           enable = false,
         },
       })
-      require('lspconfig').jdtls.setup({
+      vim.lsp.config('jdtls', {
         settings = {
           java = {
+            maven = {
+              downloadSources = true,
+            },
+            eclipse = {
+              downloadSources = true,
+            },
+            sources = {
+              organizeImports = {
+                starThreshold = 9999,
+                staticStarThreshold = 9999,
+              },
+            },
             configuration = {
               runtimes = {
                 {
@@ -155,6 +168,7 @@ return {
           },
         },
       })
+      vim.lsp.enable('jdtls')
     end
   }
 }
