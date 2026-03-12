@@ -45,6 +45,22 @@
 5. **Document Results**: Add review section to `tasks/todo.md`
 6. **Capture Lessons**: Update `tasks/lessons.md` after corrections
 
+## Commits
+
+- Keep commit messages to a single, concise line (e.g., `feat(api): add user authentication endpoint`)
+- Never include `Co-Authored-By` or any trailers
+- No multi-line descriptions or body text — just the subject line
+- Use conventional commit prefixes:
+  - `feat`: new feature
+  - `fix`: bug fix
+  - `refactor`: code restructuring without behavior change
+  - `chore`: maintenance tasks, dependency updates
+  - `docs`: documentation changes
+  - `test`: adding or updating tests
+  - `ci`: CI/CD pipeline changes
+  - `style`: formatting, whitespace, no code change
+  - `perf`: performance improvements
+
 ## Core Principles
 
 - **Simplicity First**: Make every change as simple as possible. Impact minimal code.
