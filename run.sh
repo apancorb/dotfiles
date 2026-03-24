@@ -19,7 +19,7 @@ enable_pulseaudio() {
     brew install pulseaudio
   fi
   if ! pulseaudio --check 2>/dev/null; then
-    pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
+    pulseaudio --load="module-native-protocol-tcp auth-anonymous=1" --exit-idle-time=-1 --daemon
   fi
 }
 

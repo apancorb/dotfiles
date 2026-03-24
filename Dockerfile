@@ -6,6 +6,7 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y \
   dnsutils \
   iputils-ping \
+  libasound2-plugins \
   pulseaudio-utils \
   ripgrep \
   sox \
@@ -36,6 +37,10 @@ EXPOSE 2222 8001
 
 USER codespace
 WORKDIR /home/codespace
+
+# Configure ALSA to route through PulseAudio for audio forwarding
+RUN echo 'pcm.!default { type pulse }\nctl.!default { type pulse }' > /home/codespace/.asoundrc \
+  && chown codespace:codespace /home/codespace/.asoundrc
 
 COPY --chown=codespace:codespace bash/.bash_aliases .bash_aliases
 COPY --chown=codespace:codespace claude/CLAUDE.md .claude/CLAUDE.md
