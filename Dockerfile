@@ -9,8 +9,7 @@ RUN apt-get install -y \
   pulseaudio-utils \
   ripgrep \
   sox \
-  libsox-fmt-all \
-  libsox-fmt-pulseaudio
+  libsox-fmt-all
 
 # Install neovim
 RUN wget -P /opt https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz \
