@@ -6,7 +6,11 @@ RUN apt-get update && apt-get upgrade -y
 RUN apt-get install -y \
   dnsutils \
   iputils-ping \
-  ripgrep
+  pulseaudio-utils \
+  ripgrep \
+  sox \
+  libsox-fmt-all \
+  libsox-fmt-pulseaudio
 
 # Install neovim
 RUN wget -P /opt https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz \

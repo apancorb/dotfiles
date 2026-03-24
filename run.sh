@@ -8,6 +8,21 @@ usage() {
   echo "  down: Delete the devcontainer if it exists"
 }
 
+# Enable PulseAudio with TCP support for audio forwarding to container
+enable_pulseaudio() {
+  if ! command -v pulseaudio &> /dev/null; then
+    echo "PulseAudio not found. Installing via Homebrew..."
+    if ! command -v brew &> /dev/null; then
+      echo "Error: Homebrew is not installed. Please install Homebrew."
+      exit 1
+    fi
+    brew install pulseaudio
+  fi
+  if ! pulseaudio --check 2>/dev/null; then
+    pulseaudio --load=module-native-protocol-tcp --exit-idle-time=-1 --daemon
+  fi
+}
+
 # Enable SSH agent with GPG support
 enable_ssh_agent_with_gpg_support() {
   if ! command -v gpg-agent &> /dev/null; then
@@ -83,6 +98,7 @@ build_container() {
   fi
   if ! docker run --privileged -d \
       --platform linux/amd64 \
+      -e PULSE_SERVER=host.docker.internal \
       -v /var/run/docker.sock:/var/run/docker.sock \
       -v "$HOME"/data:/home/codespace/data \
       -p 8000:2222 \
@@ -127,6 +143,7 @@ done
 if [[ "$#" -gt 0 ]]; then
   if [[ "$1" == "up" ]]; then
     enable_ssh_agent_with_gpg_support
+    enable_pulseaudio
     update_repository
     build_container
   elif [[ "$1" == "down" ]]; then
@@ -138,6 +155,7 @@ if [[ "$#" -gt 0 ]]; then
   fi
 else
   enable_ssh_agent_with_gpg_support
+  enable_pulseaudio
   update_repository
   start_container
 fi
