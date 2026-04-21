@@ -10,8 +10,6 @@
 3. Add SSH client configuration.
     - Add [config](https://github.com/apancorb/dotfiles/blob/main/ssh/config) inside the `~/.ssh` directory.
 
-*Note: A yubikey, which stores the secret keys, is required for security reasons.*
-
 ---
 
 *For more information about devcontainers, visit [this](https://www.tony.software/posts/developing_inside_container/) post from my site.*

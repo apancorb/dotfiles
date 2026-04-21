@@ -23,16 +23,6 @@ enable_pulseaudio() {
   fi
 }
 
-# Enable SSH agent with GPG support
-enable_ssh_agent_with_gpg_support() {
-  if ! command -v gpg-agent &> /dev/null; then
-    echo "Error: gpg is not installed. Please install gpg."
-    echo "Check https://gpgtools.org"
-    exit 1
-  fi
-  eval "$(gpg-agent --daemon --enable-ssh-support > /dev/null)"
-}
-
 # Update changes from remote repository
 update_repository() {
   if ! command -v git &> /dev/null; then
@@ -142,7 +132,6 @@ done
 
 if [[ "$#" -gt 0 ]]; then
   if [[ "$1" == "up" ]]; then
-    enable_ssh_agent_with_gpg_support
     enable_pulseaudio
     update_repository
     build_container
@@ -154,7 +143,6 @@ if [[ "$#" -gt 0 ]]; then
     exit 1
   fi
 else
-  enable_ssh_agent_with_gpg_support
   enable_pulseaudio
   update_repository
   start_container
