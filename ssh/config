@@ -7,6 +7,7 @@ Host *
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
 
+# Devcontainer alias for Claude Code desktop app
 Host devcontainer
     HostName localhost
     Port 8000
