@@ -50,7 +50,6 @@ install_ssh_pubkey() {
     exit 1
   fi
   docker cp "$pubkey" "$container_id":/tmp/pubkey.tmp
-  docker exec "$container_id" sudo -u codespace mkdir -p /home/codespace/.ssh
   docker exec "$container_id" sudo sh -c 'cat /tmp/pubkey.tmp >> /home/codespace/.ssh/authorized_keys && rm /tmp/pubkey.tmp'
   docker exec "$container_id" sudo chown -R codespace:codespace /home/codespace/.ssh
   docker exec "$container_id" sudo chmod 700 /home/codespace/.ssh

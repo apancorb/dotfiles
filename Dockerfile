@@ -1,16 +1,16 @@
-FROM --platform=linux/amd64 mcr.microsoft.com/vscode/devcontainers/universal:4.0.1
+FROM --platform=linux/amd64 mcr.microsoft.com/devcontainers/universal:6.0.3-noble
 LABEL maintainer="Antonio Pancorbo <me@tony.software>"
-RUN apt-get update && apt-get upgrade -y
 
 # Install additional packages
-RUN apt-get install -y \
-  dnsutils \
-  iputils-ping \
-  libasound2-plugins \
-  pulseaudio-utils \
-  ripgrep \
-  sox \
-  libsox-fmt-all
+RUN apt-get update && apt-get upgrade -y \
+  && apt-get install -y \
+    dnsutils \
+    iputils-ping \
+    libasound2-plugins \
+    pulseaudio-utils \
+    ripgrep \
+    sox \
+    libsox-fmt-all
 
 # Install neovim
 RUN wget -P /opt https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz \
