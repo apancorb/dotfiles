@@ -6,3 +6,9 @@ ForwardAgent yes
 Host *
     StrictHostKeyChecking no
     UserKnownHostsFile /dev/null
+
+Host devcontainer
+    HostName localhost
+    Port 8000
+    User codespace
+    ForwardAgent yes

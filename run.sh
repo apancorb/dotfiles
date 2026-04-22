@@ -32,24 +32,37 @@ update_repository() {
   git pull origin main
 }
 
-# Connect to running devcontainer
-connect_container() {
-  # Start SSH service in the new container
-  container_id=$(docker ps --format '{{.ID}}' --filter "ancestor=devcontainer")
+# Start sshd and fix Docker socket permissions inside the container
+prepare_container() {
+  local container_id="$1"
   docker exec "$container_id" sudo service ssh start
-
-  # Fix Docker permissions
   docker exec "$container_id" sudo usermod -aG docker codespace
   docker exec "$container_id" sudo chown root:docker /var/run/docker.sock
   docker exec "$container_id" sudo chmod 660 /var/run/docker.sock
+}
 
-  if command -v sshpass &> /dev/null; then
-    if ! sshpass -p codespace ssh codespace@localhost -p 8000; then
-      echo "Error: Failed to login into the devcontainer."
-      exit 1
-    fi
-  else
-    echo "Error: sshpass is not installed. Please install sshpass."
+# Install the host user's public key into the container's authorized_keys
+install_ssh_pubkey() {
+  local container_id="$1"
+  local pubkey="${SSH_PUBKEY:-$HOME/.ssh/id_ed25519.pub}"
+  if [ ! -f "$pubkey" ]; then
+    echo "Error: public key not found at $pubkey. Run 'ssh-keygen -t ed25519' or set SSH_PUBKEY."
+    exit 1
+  fi
+  docker cp "$pubkey" "$container_id":/tmp/pubkey.tmp
+  docker exec "$container_id" sudo -u codespace mkdir -p /home/codespace/.ssh
+  docker exec "$container_id" sudo sh -c 'cat /tmp/pubkey.tmp >> /home/codespace/.ssh/authorized_keys && rm /tmp/pubkey.tmp'
+  docker exec "$container_id" sudo chown -R codespace:codespace /home/codespace/.ssh
+  docker exec "$container_id" sudo chmod 700 /home/codespace/.ssh
+  docker exec "$container_id" sudo chmod 600 /home/codespace/.ssh/authorized_keys
+}
+
+# Connect to running devcontainer
+connect_container() {
+  container_id=$(docker ps --format '{{.ID}}' --filter "ancestor=devcontainer")
+  prepare_container "$container_id"
+  if ! ssh devcontainer; then
+    echo "Error: Failed to login into the devcontainer."
     exit 1
   fi
 }
@@ -76,27 +89,36 @@ start_container() {
 build_container() {
   if docker ps -a --format '{{.Image}}' | grep -q "devcontainer"; then
     echo "Error: devcontainer already exists, skipping build."
-    exit 1 
+    exit 1
   fi
   if [ -z "$HOME" ]; then
     echo "Error: \$HOME is not set."
+    exit 1
+  fi
+  local pubkey="${SSH_PUBKEY:-$HOME/.ssh/id_ed25519.pub}"
+  if [ ! -f "$pubkey" ]; then
+    echo "Error: public key not found at $pubkey. Run 'ssh-keygen -t ed25519' or set SSH_PUBKEY."
     exit 1
   fi
   if ! docker build -t devcontainer .; then
     echo "Error: Failed to build the devcontainer."
     exit 1
   fi
-  if ! docker run --privileged -d \
+  container_id=$(docker run --privileged -d \
       --platform linux/amd64 \
       -e PULSE_SERVER=host.docker.internal \
       -v /var/run/docker.sock:/var/run/docker.sock \
       -v "$HOME"/data:/home/codespace/data \
       -p 8000:2222 \
       -p 8001:8001 \
-      devcontainer > /dev/null; then
+      devcontainer)
+  if [ -z "$container_id" ]; then
     echo "Error: Failed to run the devcontainer."
     exit 1
   fi
+  sleep 2
+  install_ssh_pubkey "$container_id"
+  prepare_container "$container_id"
 }
 
 # Delete the devcontainer if it exists
