@@ -23,9 +23,6 @@ RUN LAZYGIT_VERSION=$(curl -s https://api.github.com/repos/jesseduffield/lazygit
   && tar -C /opt/lazygit -xzf /opt/lazygit/lazygit_${LAZYGIT_VERSION}_Linux_x86_64.tar.gz \
   && install /opt/lazygit/lazygit /usr/local/bin
 
-# Install claude code
-RUN npm install -g @anthropic-ai/claude-code
-
 # Configure SSH server
 COPY ssh/sshd.conf /etc/ssh/sshd_config.d/sshd.conf
 RUN echo "codespace:codespace" | chpasswd
@@ -37,6 +34,9 @@ EXPOSE 2222 8001
 
 USER codespace
 WORKDIR /home/codespace
+
+# Install claude code
+RUN curl -fsSL https://claude.ai/install.sh | bash
 
 # Configure ALSA to route through PulseAudio for audio forwarding
 RUN echo 'pcm.!default { type pulse }\nctl.!default { type pulse }' > /home/codespace/.asoundrc \
