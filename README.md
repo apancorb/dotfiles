@@ -2,13 +2,13 @@
 
 ![](https://miro.medium.com/v2/resize:fit:1400/0*tIIPbYu_jOyl9C1H.png)
 
-## Host setup
+## Host Setup
 
 - **iTerm2** — install [Iterm2](https://iterm2.com/), import [profile.json](iterm2/profile.json), and apply [JetBrainsMono Nerd Font](iterm2/font.tff) at size 14 ([font install guide](https://support.apple.com/guide/font-book/install-and-validate-fonts-fntbk1000/mac)).
 - **Caps Lock → Ctrl** — remap via [this guide](https://appleinsider.com/inside/macos/tips/how-to-remap-caps-lock-control-option-command-keys-in-macos).
 - **SSH** — copy [ssh/config](ssh/config) to `~/.ssh/config`.
 
-## Claude Code desktop app
+## Claude Code Desktop App
 
 Run Claude Code inside the devcontainer via the desktop app's SSH session.
 
