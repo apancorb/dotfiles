@@ -34,11 +34,12 @@ update_repository() {
 
 # Start sshd and fix Docker socket permissions inside the container
 prepare_container() {
-  local container_id="$1"
-  docker exec "$container_id" sudo service ssh start
-  docker exec "$container_id" sudo usermod -aG docker codespace
-  docker exec "$container_id" sudo chown root:docker /var/run/docker.sock
-  docker exec "$container_id" sudo chmod 660 /var/run/docker.sock
+  docker exec "$1" sudo sh -c '
+    service ssh start
+    usermod -aG docker codespace
+    chown root:docker /var/run/docker.sock
+    chmod 660 /var/run/docker.sock
+  '
 }
 
 # Install the host user's public key into the container's authorized_keys
@@ -50,15 +51,37 @@ install_ssh_pubkey() {
     exit 1
   fi
   docker cp "$pubkey" "$container_id":/tmp/pubkey.tmp
-  docker exec "$container_id" sudo sh -c 'cat /tmp/pubkey.tmp >> /home/codespace/.ssh/authorized_keys && rm /tmp/pubkey.tmp'
-  docker exec "$container_id" sudo chown -R codespace:codespace /home/codespace/.ssh
-  docker exec "$container_id" sudo chmod 700 /home/codespace/.ssh
-  docker exec "$container_id" sudo chmod 600 /home/codespace/.ssh/authorized_keys
+  docker exec "$container_id" sudo sh -c '
+    cat /tmp/pubkey.tmp >> /home/codespace/.ssh/authorized_keys
+    rm /tmp/pubkey.tmp
+    chown -R codespace:codespace /home/codespace/.ssh
+    chmod 700 /home/codespace/.ssh
+    chmod 600 /home/codespace/.ssh/authorized_keys
+  '
+}
+
+# Make .env vars visible to SSH sessions (sshd scrubs its own env on login,
+# but PAM sources /etc/environment for every session it sets up).
+install_env_vars() {
+  local container_id="$1"
+  docker exec -i "$container_id" sudo sh -c '
+    grep -E "^[A-Za-z_][A-Za-z0-9_]*=" >> /etc/environment
+  ' < .env
+}
+
+# Register the container's SSH host key in the host's known_hosts so
+# clients with strict host key checking (e.g. Claude Code desktop app) can connect.
+register_host_key() {
+  mkdir -p "$HOME/.ssh"
+  touch "$HOME/.ssh/known_hosts"
+  ssh-keygen -R "[localhost]:8000" > /dev/null 2>&1
+  ssh-keyscan -p 8000 -H localhost >> "$HOME/.ssh/known_hosts" 2>/dev/null
 }
 
 # Connect to running devcontainer
 connect_container() {
-  container_id=$(docker ps --format '{{.ID}}' --filter "ancestor=devcontainer")
+  local container_id
+  container_id=$(docker ps -q --filter "ancestor=devcontainer")
   prepare_container "$container_id"
   if ! ssh devcontainer; then
     echo "Error: Failed to login into the devcontainer."
@@ -68,10 +91,11 @@ connect_container() {
 
 # Start devcontainer if it exists
 start_container() {
-  if docker ps --format '{{.Image}}' | grep -q "devcontainer"; then
+  if [ -n "$(docker ps -q --filter ancestor=devcontainer)" ]; then
     connect_container
-  elif docker ps -a --format '{{.Image}}' | grep -q "devcontainer"; then
-    container_id=$(docker ps -a --format '{{.ID}}' --filter "ancestor=devcontainer")
+  elif [ -n "$(docker ps -aq --filter ancestor=devcontainer)" ]; then
+    local container_id
+    container_id=$(docker ps -aq --filter "ancestor=devcontainer")
     if ! docker start "$container_id" &> /dev/null; then
       echo "Error: Failed to start the devcontainer."
       exit 1
@@ -86,7 +110,7 @@ start_container() {
 
 # Bring up devcontainer if not running, otherwise, build the container
 build_container() {
-  if docker ps -a --format '{{.Image}}' | grep -q "devcontainer"; then
+  if [ -n "$(docker ps -aq --filter ancestor=devcontainer)" ]; then
     echo "Error: devcontainer already exists, skipping build."
     exit 1
   fi
@@ -99,13 +123,19 @@ build_container() {
     echo "Error: public key not found at $pubkey. Run 'ssh-keygen -t ed25519' or set SSH_PUBKEY."
     exit 1
   fi
+  if [ ! -f .env ]; then
+    echo "Error: .env file not found. Copy .env.example to .env and customize."
+    exit 1
+  fi
   if ! docker build -t devcontainer .; then
     echo "Error: Failed to build the devcontainer."
     exit 1
   fi
+  local container_id
   container_id=$(docker run --privileged -d \
       --platform linux/amd64 \
       -e PULSE_SERVER=host.docker.internal \
+      --env-file .env \
       -v /var/run/docker.sock:/var/run/docker.sock \
       -v "$HOME"/data:/home/codespace/data \
       -p 8000:2222 \
@@ -117,19 +147,21 @@ build_container() {
   fi
   sleep 2
   install_ssh_pubkey "$container_id"
+  install_env_vars "$container_id"
   prepare_container "$container_id"
+  register_host_key
 }
 
 # Delete the devcontainer if it exists
 delete_container() {
-  if docker ps -a --format '{{.Image}}' | grep -q "devcontainer"; then
-    container_id=$(docker ps -a --format '{{.ID}}' --filter "ancestor=devcontainer")
-    if ! docker rm -f "$container_id" > /dev/null; then
-      echo "Error: Failed to remove the devcontainer"
-      exit 1
-    fi
-  else
+  local container_id
+  container_id=$(docker ps -aq --filter "ancestor=devcontainer")
+  if [ -z "$container_id" ]; then
     echo "Error: devcontainer does not exist, nothing to delete."
+    exit 1
+  fi
+  if ! docker rm -f "$container_id" > /dev/null; then
+    echo "Error: Failed to remove the devcontainer"
     exit 1
   fi
 }

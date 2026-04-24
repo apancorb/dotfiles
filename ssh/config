@@ -1,17 +1,4 @@
 # Automatically add keys to the SSH agent
 AddKeysToAgent yes
-
 # Enable SSH agent forwarding
 ForwardAgent yes
-
-# Disbale known hosts check
-Host *
-    StrictHostKeyChecking no
-    UserKnownHostsFile /dev/null
-
-# Devcontainer alias for Claude Code desktop app
-Host devcontainer
-    HostName localhost
-    Port 8000
-    User codespace
-    ForwardAgent yes

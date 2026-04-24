@@ -47,10 +47,3 @@ COPY --chown=codespace:codespace claude/CLAUDE.md .claude/CLAUDE.md
 COPY --chown=codespace:codespace git/.gitconfig .gitconfig
 COPY --chown=codespace:codespace nvim .config/nvim
 COPY --chown=codespace:codespace ssh/config .ssh/config
-
-# Copy .env file if it exists and source it in .bashrc
-COPY --chown=codespace:codespace .env* ./
-RUN if [ -f .env ]; then \
-      echo '# Source environment variables' >> .bashrc && \
-      echo '[ -f ~/.env ] && set -a && source ~/.env && set +a' >> .bashrc; \
-    fi
