@@ -19,8 +19,8 @@ Run Claude Code inside the devcontainer from the desktop app via the SSH Session
 3. Build and start the container: `./run.sh up`. The script installs your public key into the container's `authorized_keys` and starts sshd.
 4. In the Claude Code desktop app, open the environment dropdown → **+ Add SSH connection**.
     - Name: `devcontainer`
-    - SSH Host: `devcontainer`
-    - Leave SSH Port and Identity File empty (resolved via `~/.ssh/config`).
+    - SSH Host: `codespace@localhost`
+    - SSH Port: `8000`
     - Save.
 5. Select the `devcontainer` environment to start a Claude Code session inside the container.
 6. For a terminal shell into the container, run `./run.sh`. When done, `./run.sh down` removes it.
