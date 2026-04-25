@@ -6,11 +6,7 @@ RUN apt-get update && apt-get upgrade -y \
   && apt-get install -y \
     dnsutils \
     iputils-ping \
-    libasound2-plugins \
-    pulseaudio-utils \
-    ripgrep \
-    sox \
-    libsox-fmt-all
+    ripgrep
 
 # Install neovim
 RUN wget -P /opt https://github.com/neovim/neovim/releases/download/v0.11.6/nvim-linux-x86_64.tar.gz \
@@ -37,10 +33,6 @@ WORKDIR /home/codespace
 
 # Install claude code
 RUN curl -fsSL https://claude.ai/install.sh | bash
-
-# Configure ALSA to route through PulseAudio for audio forwarding
-RUN echo 'pcm.!default { type pulse }\nctl.!default { type pulse }' > /home/codespace/.asoundrc \
-  && chown codespace:codespace /home/codespace/.asoundrc
 
 COPY --chown=codespace:codespace bash/.bash_aliases .bash_aliases
 COPY --chown=codespace:codespace claude/CLAUDE.md .claude/CLAUDE.md

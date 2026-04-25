@@ -8,21 +8,6 @@ usage() {
   echo "  down: Delete the devcontainer if it exists"
 }
 
-# Enable PulseAudio with TCP support for audio forwarding to container
-enable_pulseaudio() {
-  if ! command -v pulseaudio &> /dev/null; then
-    echo "PulseAudio not found. Installing via Homebrew..."
-    if ! command -v brew &> /dev/null; then
-      echo "Error: Homebrew is not installed. Please install Homebrew."
-      exit 1
-    fi
-    brew install pulseaudio
-  fi
-  if ! pulseaudio --check 2>/dev/null; then
-    pulseaudio --load="module-native-protocol-tcp auth-anonymous=1" --exit-idle-time=-1 --daemon
-  fi
-}
-
 # Update changes from remote repository
 update_repository() {
   if ! command -v git &> /dev/null; then
@@ -134,7 +119,6 @@ build_container() {
   local container_id
   container_id=$(docker run --privileged -d \
       --platform linux/amd64 \
-      -e PULSE_SERVER=host.docker.internal \
       --env-file .env \
       -v /var/run/docker.sock:/var/run/docker.sock \
       -v "$HOME"/data:/home/codespace/data \
@@ -185,7 +169,6 @@ done
 
 if [[ "$#" -gt 0 ]]; then
   if [[ "$1" == "up" ]]; then
-    enable_pulseaudio
     update_repository
     build_container
   elif [[ "$1" == "down" ]]; then
@@ -196,7 +179,6 @@ if [[ "$#" -gt 0 ]]; then
     exit 1
   fi
 else
-  enable_pulseaudio
   update_repository
   start_container
 fi
