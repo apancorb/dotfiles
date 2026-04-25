@@ -25,7 +25,6 @@ RUN curl -fsSL https://claude.ai/install.sh | bash \
 
 # Configure SSH server
 COPY ssh/sshd.conf /etc/ssh/sshd_config.d/sshd.conf
-RUN echo "codespace:codespace" | chpasswd
 
 # Ports:
 #  SSH  - 8000:2222

@@ -12,7 +12,7 @@
 
 Run Claude Code inside the devcontainer via the desktop app's SSH session.
 
-1. Ensure an SSH key exists: `ssh-keygen -t ed25519 -C "macbookpro"` (if `~/.ssh/id_ed25519` is missing).
+1. Ensure an SSH key exists: `ssh-keygen -t ed25519 -C "macbookpro"` (if `~/.ssh/id_ed25519` is missing). Leave the passphrase empty — the desktop app's SSH client cannot prompt for one.
 2. Build and start the container: `./run.sh up` — installs your public key and starts sshd.
 3. In the desktop app, open the environment dropdown → **+ Add SSH connection**:
 
